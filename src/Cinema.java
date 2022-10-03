@@ -10,12 +10,6 @@ public class Cinema extends Building{
 	}
 	
 	
-	public void show(int assistants, int ticketPrice) {
-
-		super.show();
-		System.out.println(plannedSession(assistants,ticketPrice));
-	}
-	
 	public String plannedSession(int assistants, int ticketPrice) {
 		
 		int moneyRaising;

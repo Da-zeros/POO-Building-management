@@ -36,12 +36,18 @@ public class App {
 				selectTypeOfBuilding(buildingArray);
 				break;
 			case "2":
-				
+				showBuildings(buildingArray);
+				delBuilding(buildingArray);
 				break;
 			case "3":
-				
+				showBuildings(buildingArray);
+				showBuildingInfo(buildingArray);
+				break;
+			case "4":
+				programRunnig=false;
 				break;
 			default:
+				System.out.println("Option out of range");
 				break;
 			}
 			
@@ -87,6 +93,7 @@ public class App {
 			buildingArray.add(createHospital(buildingName, buildingFloors, buildingSurface));
 			break;
 		default:
+			System.out.println("Option out of range.");
 			break;
 		}
 		
@@ -111,12 +118,88 @@ public class App {
 		Scanner sc = new Scanner(System.in);
 		int patients;
 		
-		System.out.println("Introduce amount of rooms:");
+		System.out.println("Introduce amount of patients:");
 		patients= sc.nextInt();
 		
 		Hospital newHospital = new Hospital(hospitalName, hospitalFloors, hospitalSurface, patients);
 		
 		return newHospital;
+	}
+	
+	public static int checkIfExists(List<Building> buildingList) {
+		
+		Scanner sc = new Scanner(System.in);
+		boolean buildingExists = false;
+		int index, arraySize, buildingIndex;
+		String buildingName;
+		
+		arraySize =  buildingList.size();
+		index = 0;
+		
+		System.out.println("Insert the building name:");
+		buildingName = sc.nextLine();
+		
+		while(index < arraySize && !buildingExists) {
+			
+			buildingExists = (buildingName.equals( buildingList.get(index).getName() ) ) ? true : false;
+
+			index++;
+		}
+		
+		buildingIndex = ( buildingExists ) ? index -1: -1;
+		
+		return buildingIndex; 
+		
+	}
+	
+	public static void showBuildings(List<Building> buildingList) {
+		
+		System.out.println("Existing buildings");
+		if(buildingList.size() > 0) {
+			for (Building build : buildingList) {
+				System.out.println(build.getName());
+			}
+		}else buildingList.get(0).getName();
+		
+	}
+	
+	public static void delBuilding(List<Building> buildingList) {
+		int index;
+		index = checkIfExists(buildingList);
+		
+		if( index != -1)buildingList.remove(index);
+		else System.out.println("The building does't,'exist");
+	}
+	
+	public static void showBuildingInfo(List<Building> buildingList) {
+		
+		Cinema cinema;
+		Building building;
+		int index, ticketPrice, customers;
+		Scanner sc = new Scanner(System.in);;
+		
+		index = checkIfExists(buildingList);
+		
+		building = ( index != -1)?buildingList.get(index):null;
+		
+		if(building!=null) {
+			
+			if( building instanceof Cinema) {
+				
+				cinema = (Cinema) building;
+				System.out.println("how many costumers per session");
+				customers = sc.nextInt();
+				System.out.println("how much the ticket costs");
+				ticketPrice = sc.nextInt();
+				cinema.show();
+				System.out.println(cinema.plannedSession(customers, ticketPrice));
+				
+
+			}else {
+				building.show();
+			}
+		}else System.out.println("The building does't,'exist");
+		
 	}
 	
 
